@@ -123,12 +123,12 @@ class _HomePageState extends State<HomePage> {
                     ),
 
                     SizedBox(height: 20),
-                    Text("Flash Sale",
+                    Text("Our Products",
                         style: mTextStyle16(mFontWeight: FontWeight.bold)),
 
 
                     /// Products Section
-                    ///
+
                     BlocBuilder<ProductBloc,ProductState>(
                         builder: (_,state){
                           if(state is ProductLoadingState){
@@ -151,6 +151,8 @@ class _HomePageState extends State<HomePage> {
                                   ),
                                   itemBuilder: (_,index){
                                     var eachData = state.productModel[index];
+
+                                    /// PRODUCT CART SECTION
                                     return InkWell(
                                       onTap: (){
                                         Navigator.push(context, MaterialPageRoute(builder: (context)=> ProductDetailPage(productData: state.productModel[index])));
@@ -176,6 +178,7 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
+  /// TODO CATEGORY ICON UI SECTION
   Widget categoryIcon({required IconData icon, required String title}) {
     return Padding(
       padding: const EdgeInsets.only(left: 20.0, right: 10),
@@ -192,6 +195,8 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
+
+  /// TODO PRODUCT DATA UI SECTION
   Widget productsCard(
       String title, String price, String imagePath) {
     return Container(
@@ -224,7 +229,7 @@ class _HomePageState extends State<HomePage> {
             padding: const EdgeInsets.only(right: 14.0),
             child: Row(
               children: [
-                Text("\$${price}", style: mTextStyle14(mFontWeight: FontWeight.bold)),
+                Text("\u{20B9} ${price}", style: mTextStyle14(mFontWeight: FontWeight.bold)),
                 SizedBox(width: 5),
 
                 Spacer(),

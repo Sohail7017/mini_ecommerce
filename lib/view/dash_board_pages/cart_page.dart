@@ -1,5 +1,7 @@
 import 'package:ecommerce_task/models/cart_model.dart';
 import 'package:ecommerce_task/utils/ui_helper.dart';
+import 'package:ecommerce_task/view/dash_board_pages/bottom_nav_screen.dart';
+import 'package:ecommerce_task/view/dash_board_pages/home_page.dart';
 import 'package:ecommerce_task/view_model/blocs/cart_bloc/cart_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -46,12 +48,12 @@ class _CartPageState extends State<CartPage> {
                 padding: const EdgeInsets.symmetric(
                     horizontal: 14.0, vertical: 25),
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     SizedBox(
                       height: mqData!.size.height * 0.040,
                     ),
-                    Text('Cart',
+                    Text('Cart Page',
                       style: mTextStyle20(mFontWeight: FontWeight.bold),)
                   ],
                 ),
@@ -76,7 +78,7 @@ class _CartPageState extends State<CartPage> {
                     height: mqData!.size.height * 0.030,
                   ),
 
-
+                  Text('Cart Items',style: mTextStyle16(mFontWeight: FontWeight.w600),),
 
                   /// CART ITEM SECTION
                   Expanded(
@@ -86,7 +88,7 @@ class _CartPageState extends State<CartPage> {
                       } else if (state is CartErrorState) {
                         return Center(child: Text(state.errMsg),);
                       } else if (state is CartLoadedState) {
-                        return ListView.builder(
+                        return state.cartItems.isNotEmpty? ListView.builder(
                             itemCount: state.cartItems.length,
                             itemBuilder: (_, index) {
                               var eachCart = state.cartItems[index];
@@ -109,7 +111,29 @@ class _CartPageState extends State<CartPage> {
                                   },
                                   onDelete: (){context.read<CartBloc>().add(RemoveCartEvent(product: eachCart.product));
                                   });
-                            });
+                            }):
+                        Center(child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text('NoCart Yet!!',style: mTextStyle16(),),
+                            SizedBox(
+                              width: mqData!.size.width * 0.5,
+                              child: ElevatedButton(
+                                onPressed: () {
+                                  Navigator.push(context, MaterialPageRoute(builder: (context)=>BottomNavScreen()));
+                                },
+                                style: ElevatedButton.styleFrom(
+                                    backgroundColor: Colors.deepPurple.shade100
+                                ),
+                                child: Text(
+                                  'Add Cart',
+                                  style: mTextStyle14(mColor: Colors.white),
+                                ),
+                              ),
+                            )
+                          ],
+                        ),)
+                        ;
                       }
                       return Container();
                     }),
@@ -132,13 +156,14 @@ class _CartPageState extends State<CartPage> {
                   padding: const EdgeInsets.symmetric(horizontal: 14.0),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [ BlocBuilder<CartBloc, CartState>(
+                    children: [
+                      BlocBuilder<CartBloc, CartState>(
                       builder: (context, state) {
                         double totalPrice = 0.0;  // Default total price
                         if (state is CartLoadedState) {
                           totalPrice = state.totalPrice; // Get total from state
                         }
-                        return Text('Total \$ ${totalPrice.toStringAsFixed(2)}',
+                        return Text(totalPrice!=null? 'Total \u{20B9} ${totalPrice.toStringAsFixed(2)}': 'Total \u{20B9} 0.0',
                           style: mTextStyle16(),
                         );
                       },
@@ -169,6 +194,7 @@ class _CartPageState extends State<CartPage> {
     );
   }
 
+  /// TODO CUSTOM CART UI
   Widget cartUi({required String productImage,
     required String productTitle,
     required String price,
@@ -204,7 +230,7 @@ class _CartPageState extends State<CartPage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(productTitle, style: mTextStyle14(),),
-                    Text('\$ ${price}',
+                    Text('\u{20B9} ${price}',
                       style: mTextStyle14(mFontWeight: FontWeight.w600),),
 
                     Row(

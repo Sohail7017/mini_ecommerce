@@ -14,6 +14,9 @@ class CartBloc extends Bloc<CartEvent, CartState> {
   final AppRepository appRepository;
   List<CartModel> _cartItems = [];
   CartBloc({required this.appRepository,}) : super(CartInitialState()) {
+
+ /// LOAD CART FOR SHOWN CART ITEMS IN CART PAGE
+
     on<LoadCartEvent>((event, emit) async {
       emit(CartLoadingState());
       try {
@@ -28,6 +31,8 @@ class CartBloc extends Bloc<CartEvent, CartState> {
       }
     });
 
+    /// ADD CART ITEM
+
     on<AddCartEvent>((event,emit) {
       int index = _cartItems.indexWhere((item) => item.product.id == event.product.id);
       if (index != -1) {
@@ -39,11 +44,15 @@ class CartBloc extends Bloc<CartEvent, CartState> {
       emit(CartLoadedState(cartItems: _cartItems, totalPrice: _calculateTotal()));
 
     });
+
+    /// REMOVE CART ITEM
     on<RemoveCartEvent>((event,emit){
       _cartItems.removeWhere((item) => item.product.id == event.product.id);
       _saveCart();
       emit(CartLoadedState(cartItems: _cartItems, totalPrice: _calculateTotal()));
     });
+
+    /// QUANTITY UPDATE
     on<QuantityUpdateCartEvent>((event,emit){
       int index = _cartItems.indexWhere((item) => item.product.id == event.product.id);
       if (index != -1) {
@@ -56,10 +65,13 @@ class CartBloc extends Bloc<CartEvent, CartState> {
 
 
   }
+
+  /// TOTAL PRICE CALCULATE
   double _calculateTotal() {
     return _cartItems.fold(0, (total, item) => total + (item.product.price! * item.quantity));
   }
 
+  /// SAVE CART ITEMS
   Future<void> _saveCart() async {
     final prefs = await SharedPreferences.getInstance();
     final cartJson = _cartItems.map((item) => jsonEncode(item.toJson())).toList();

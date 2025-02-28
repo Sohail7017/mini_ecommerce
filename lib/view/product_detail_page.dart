@@ -76,7 +76,7 @@ class ProductDetailPage extends StatelessWidget {
                                 spacing: 5,
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
-                                  Text('\$ ${productData.price}',style: mTextStyle14(mFontWeight: FontWeight.w600),),
+                                  Text('\u{20B9} ${productData.price}',style: mTextStyle14(mFontWeight: FontWeight.w600),),
 
                                       Spacer(),
                                   Image.asset('assets/images/rating.png',width: 24,height: 24,),

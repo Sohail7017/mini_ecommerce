@@ -9,6 +9,8 @@ part 'product_state.dart';
 class ProductBloc extends Bloc<ProductEvent, ProductState> {
   AppRepository appRepository;
   ProductBloc({required this.appRepository}) : super(ProductInitialState()) {
+
+    /// VIEW PRODUCT DATA
     on<ViewProductEvent>((event, emit) async{
       emit(ProductLoadingState());
       try{

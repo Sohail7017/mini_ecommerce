@@ -1,4 +1,5 @@
 import 'package:ecommerce_task/view/dash_board_pages/bottom_nav_screen.dart';
+import 'package:ecommerce_task/view/splash_screen.dart';
 import 'package:ecommerce_task/view_model/blocs/cart_bloc/cart_bloc.dart';
 import 'package:ecommerce_task/view_model/blocs/product_bloc/product_bloc.dart';
 import 'package:ecommerce_task/view_model/data/remote/api_helper.dart';
@@ -28,7 +29,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home:  BottomNavScreen(),
+      home:  SplashScreen(),
       debugShowCheckedModeBanner: false,
     );
   }
